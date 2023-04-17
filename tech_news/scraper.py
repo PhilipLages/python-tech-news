@@ -1,5 +1,7 @@
 import time
 import requests
+from requests import HTTPError, Timeout
+
 
 # Requisito 1
 def fetch(url):
@@ -9,7 +11,7 @@ def fetch(url):
         data = requests.get(url, headers=header, timeout=3)
         data.raise_for_status()
         return data.text
-    except:
+    except ( HTTPError, Timeout ):
         return None
 
 
