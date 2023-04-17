@@ -3,6 +3,7 @@ import requests
 from requests import HTTPError, Timeout
 from parsel import Selector
 from bs4 import BeautifulSoup
+from tech_news.database import create_news
 
 
 # Requisito 1
@@ -78,4 +79,23 @@ def scrape_news(html_content):
 
 # Requisito 5
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    all_news = []
+    blogURL = "https://blog.betrybe.com/"
+
+    while blogURL and len(all_news) < amount:
+        page_content = fetch(blogURL)
+        all_posts_links = scrape_updates(page_content)
+
+        for link in all_posts_links:
+            article_content = fetch(link)
+            news = scrape_news(article_content)
+            all_news.append(news)
+
+            if len(all_news) == amount:
+                create_news(all_news)
+                return all_news
+
+        blogURL = scrape_next_page_link(page_content)
+
+    create_news(all_news)
+    return all_news
