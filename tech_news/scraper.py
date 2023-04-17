@@ -11,7 +11,7 @@ def fetch(url):
         data = requests.get(url, headers=header, timeout=3)
         data.raise_for_status()
         return data.text
-    except ( HTTPError, Timeout ):
+    except (HTTPError, Timeout):
         return None
 
 
