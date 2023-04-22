@@ -35,11 +35,11 @@ def search_by_date(date):
 
 # Requisito 9
 def search_by_category(category):
-    news_info = []
+    news = []
     query = {"category": {"$regex": category, "$options": "i"}}
 
     for info in search_news(query):
         if info.get("category", "").lower() == category.lower():
-            news_info.append((info["title"], info["url"]))
+            news.append((info["title"], info["url"]))
 
-    return news_info
+    return news
